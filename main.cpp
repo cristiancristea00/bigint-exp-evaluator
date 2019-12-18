@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-    BigInteger a = {PLUS, 2, "18"};
-    BigInteger b = {PLUS, 2, "34"};
-    cout << a + b << endl << a * b;
+    BigInteger a = {MINUS, 2, "34"};
+    BigInteger b = {PLUS, 2, "18"};
+    cout << a + b << endl << a << endl << b;
     return 0;
 }

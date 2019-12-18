@@ -1,6 +1,6 @@
 #include "BigInteger.h"
 
-BigInteger::BigInteger(SEMN newSign, unsigned newNOD, char newDigits[1000])
+BigInteger::BigInteger(SEMN newSign, unsigned newNOD, const char* newDigits)
 {
     sign = newSign;
     numberOfDigits = newNOD;
@@ -34,9 +34,9 @@ BigInteger BigInteger::operator+(BigInteger BI)
     if (sign == BI.sign)
     {
         BigInteger sum;
-        char carry = 0;
-        unsigned maxLenght = max(numberOfDigits, BI.numberOfDigits);
-        for (int i = 0; i < maxLenght; ++i)
+        short int carry = 0;
+        unsigned maxLength = max(numberOfDigits, BI.numberOfDigits);
+        for (short int i = 0; i < maxLength; ++i)
         {
             sum.digits[i] = digits[i] + BI.digits[i] + carry;
             carry = sum.digits[i] / 10;
@@ -44,26 +44,97 @@ BigInteger BigInteger::operator+(BigInteger BI)
         }
         if (carry != 0)
         {
-            sum.digits[maxLenght++] = carry;
+            sum.digits[maxLength++] = carry;
         }
-        sum.numberOfDigits = maxLenght;
+        sum.numberOfDigits = maxLength;
         sum.sign = sign;
         return sum;
     }
+    else if (sign == PLUS && BI.sign == MINUS)
+    {
+        BI.sign = PLUS;
+        return *this - BI;
+    }
     else
     {
-        //TODO
+        BigInteger aux = *this;
+        aux.sign = PLUS;
+        return BI - aux;
     }
 }
 BigInteger BigInteger::operator-(BigInteger BI)
 {
-    //TODO
+    if (sign == MINUS && BI.sign == PLUS)
+    {
+        BI.sign = MINUS;
+        return *this + BI;
+    }
+    else if (sign == PLUS && BI.sign == MINUS)
+    {
+        BI.sign = PLUS;
+        return *this + BI;
+    }
+    else
+    {
+        BigInteger difference;
+        BigInteger a;
+        BigInteger b;
+        if (this->compare(BI) == BIGGER)
+        {
+            a = *this;
+            b = BI;
+            if (a.sign == MINUS && b.sign == MINUS)
+            {
+                difference.sign = MINUS;
+            }
+            else
+            {
+                difference.sign = PLUS;
+            }
+        }
+        else if (this->compare(BI) == LESS)
+        {
+            a = BI;
+            b = *this;
+            if (a.sign == MINUS && b.sign == MINUS)
+            {
+                difference.sign = PLUS;
+            }
+            else
+            {
+                difference.sign = MINUS;
+            }
+        }
+        difference.numberOfDigits = a.numberOfDigits;
+        short int carry = 0;
+        unsigned int i = 0;
+        for (i = 0; i < difference.numberOfDigits; ++i)
+        {
+            difference.digits[i] = a.digits[i] - b.digits[i] + carry;
+            if (difference.digits[i] < 0)
+            {
+                difference.digits[i] += 10;
+                carry = -1;
+            }
+            else
+            {
+                carry = 0;
+            }
+        }
+        i = difference.numberOfDigits - 1;
+        while (difference.digits[i] == 0)
+        {
+            --i;
+        }
+        difference.numberOfDigits = i + 1;
+        return difference;
+    }
 }
 BigInteger BigInteger::operator*(BigInteger BI)
 {
     BigInteger product;
-    char carry = 0;
-    int i, j;
+    short int carry = 0;
+    short int i, j;
     for (i = 0; i < numberOfDigits; ++i)
     {
         carry = 0;
@@ -95,6 +166,9 @@ BigInteger BigInteger::operator*(BigInteger BI)
 }
 BigInteger BigInteger::operator/(BigInteger BI)
 {
+
+    BigInteger quotient;
+    BigInteger remainder;
     //TODO
 }
 
@@ -108,7 +182,7 @@ COMP BigInteger::compare(BigInteger BI)
     {
         return BIGGER;
     }
-    for (int i = numberOfDigits -1; i >= 0; --i)
+    for (short int i = numberOfDigits - 1; i >= 0; --i)
     {
         if (digits[i] < BI.digits[i])
         {

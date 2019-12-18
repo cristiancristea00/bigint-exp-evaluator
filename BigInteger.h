@@ -1,10 +1,8 @@
-#ifndef BIGINTEGER_H
-#define BIGINTEGER_H
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <cstring>
 
-#define DIM_MAX 1000
+#define DIM_MAX 4
 
 using namespace std;
 
@@ -25,12 +23,12 @@ class BigInteger
 {
  private:
     SEMN sign;
-    unsigned numberOfDigits;
+    short unsigned numberOfDigits;
     char digits[DIM_MAX];
     COMP compare(BigInteger);
 
  public:
-    BigInteger(SEMN newSign, unsigned newNOD, char newDigits[1000]);
+    BigInteger(SEMN newSign, unsigned newNOD, const char* newDigits);
     BigInteger();
     friend ostream& operator<<(ostream&, BigInteger);
     BigInteger operator+(BigInteger);
@@ -38,5 +36,3 @@ class BigInteger
     BigInteger operator*(BigInteger);
     BigInteger operator/(BigInteger);
 };
-
-#endif
