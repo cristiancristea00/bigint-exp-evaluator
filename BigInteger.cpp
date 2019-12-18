@@ -97,3 +97,27 @@ BigInteger BigInteger::operator/(BigInteger BI)
 {
     //TODO
 }
+
+COMP BigInteger::compare(BigInteger BI)
+{
+    if (numberOfDigits < BI.numberOfDigits)
+    {
+        return LESS;
+    }
+    if (numberOfDigits > BI.numberOfDigits)
+    {
+        return BIGGER;
+    }
+    for (int i = numberOfDigits -1; i >= 0; --i)
+    {
+        if (digits[i] < BI.digits[i])
+        {
+            return LESS;
+        }
+        if (digits[i] > BI.digits[i])
+        {
+            return BIGGER;
+        }
+    }
+    return EQUAL;
+}

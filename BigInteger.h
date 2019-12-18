@@ -14,12 +14,20 @@ enum SEMN
     PLUS
 };
 
+enum COMP
+{
+    LESS = -1,
+    EQUAL = 0,
+    BIGGER = 1
+};
+
 class BigInteger
 {
  private:
     SEMN sign;
     unsigned numberOfDigits;
     char digits[DIM_MAX];
+    COMP compare(BigInteger);
 
  public:
     BigInteger(SEMN newSign, unsigned newNOD, char newDigits[1000]);
