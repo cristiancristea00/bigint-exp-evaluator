@@ -8,9 +8,6 @@ BigInteger evaluateInfix(const vector<Token>&);
 
 int main()
 {
-    // a = {PLUS, 2 , "50"};
-    //BigInteger b = {PLUS, 2 , "60"};
-    //cout << a - b;
     string postfix;
     getline(cin, postfix);
     cout << evaluateInfix(infixToPostfix(postfix));
@@ -26,7 +23,7 @@ vector<Token> infixToPostfix(const string& expression)
     string token;
     _Operator op{};
 
-    while (exp >> token)
+    while (exp >> token) //Pentru fiecare element din expresie
     {
         if ((token.size() > 1) || (token.size() == 1 && isdigit(token.at(0)))) //Verificam daca token-ul este operand
         {

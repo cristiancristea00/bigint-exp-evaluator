@@ -1,6 +1,6 @@
 #include "BigInteger.h"
 
-BigInteger::BigInteger(SEMN newSign, unsigned newNOD, const char* newDigits)
+BigInteger::BigInteger(SIGN newSign, unsigned newNOD, const char* newDigits)
 {
     sign = newSign;
     numberOfDigits = newNOD;
@@ -62,6 +62,7 @@ BigInteger BigInteger::operator+(BigInteger BI)
         return BI - aux;
     }
 }
+
 BigInteger BigInteger::operator-(BigInteger BI)
 {
     if (sign == MINUS && BI.sign == PLUS)
@@ -105,6 +106,10 @@ BigInteger BigInteger::operator-(BigInteger BI)
                 difference.sign = MINUS;
             }
         }
+        else
+        {
+            return {PLUS, 1, "0"};
+        }
         difference.numberOfDigits = a.numberOfDigits;
         short int carry = 0;
         unsigned int i = 0;
@@ -130,6 +135,7 @@ BigInteger BigInteger::operator-(BigInteger BI)
         return difference;
     }
 }
+
 BigInteger BigInteger::operator*(BigInteger BI)
 {
     BigInteger product;
@@ -164,6 +170,7 @@ BigInteger BigInteger::operator*(BigInteger BI)
     }
     return product;
 }
+
 BigInteger BigInteger::operator/(BigInteger BI)
 {
     if (BI.digits[0] == 0 && BI.numberOfDigits == 1)
@@ -185,8 +192,49 @@ BigInteger BigInteger::operator/(BigInteger BI)
     {
         quotient.sign = MINUS;
     }
-    //TODO
+    if (*this == BI)
+    {
+        return {quotient.sign, 1, "1"};
+    }
+    //TODO Debug
+    quotient.numberOfDigits = numberOfDigits;
+    remainder.numberOfDigits = 0;
+    for (short int i = numberOfDigits; i >= 0; --i)
+    {
+        for (int j = numberOfDigits - 1; j >= 0; --j)
+        {
+            remainder.digits[j + 1] = remainder.digits[j];
+        }
+        ++remainder.numberOfDigits;
+        remainder.digits[0] = digits[i];
+        quotient.digits[i] = 0;
+        while (remainder >= BI)
+        {
+            ++quotient.digits[i];
+            remainder = remainder - BI;
+        }
+    }
+    while (quotient.digits[quotient.numberOfDigits - 1] == 0 && quotient.numberOfDigits > 1)
+    {
+        --quotient.numberOfDigits;
+    }
     return quotient;
+}
+
+bool BigInteger::operator==(const BigInteger& BI) const
+{
+    if (numberOfDigits == BI.numberOfDigits)
+    {
+        return true;
+    }
+    for (short int i = numberOfDigits - 1; i >= 0; --i)
+    {
+        if (digits[i] != BI.digits[i])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool BigInteger::operator<(const BigInteger& BI) const
@@ -212,7 +260,13 @@ bool BigInteger::operator<(const BigInteger& BI) const
     }
     return false;
 }
+
 bool BigInteger::operator>(const BigInteger& BI) const
 {
     return BI < *this;
+}
+
+bool BigInteger::operator>=(const BigInteger& BI) const
+{
+    return !(*this < BI);
 }
