@@ -97,22 +97,6 @@ vector<Token> infixToPostfix(const string& expression)
         queue.push_back({false, {}, true, {ops.top().sym, ops.top().pre}});
         ops.pop();
     }
-
-
-    //Test
-    cout << "Postfix: ";
-    for (auto x : queue)
-    {
-        if (x.isOperand)
-        {
-            cout << x.Operand << ' ';
-        }
-        else if (x.isOperator)
-        {
-            cout << x.Operator.sym << ' ';
-        }
-    }
-    cout << endl;
     return queue;
 }
 

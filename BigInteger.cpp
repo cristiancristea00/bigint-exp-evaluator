@@ -196,7 +196,6 @@ BigInteger BigInteger::operator/(BigInteger BI)
     {
         return {quotient.sign, 1, "1"};
     }
-    //TODO Debug
     quotient.numberOfDigits = numberOfDigits;
     remainder.numberOfDigits = 0;
     for (short int i = numberOfDigits; i >= 0; --i)
@@ -223,13 +222,20 @@ BigInteger BigInteger::operator/(BigInteger BI)
 
 bool BigInteger::operator==(const BigInteger& BI) const
 {
-    if (numberOfDigits == BI.numberOfDigits)
+    BigInteger a = *this;
+    BigInteger b = BI;
+    // Elimina zero-urile semnificative, daca exista
+    while (a.digits[a.numberOfDigits - 1] == 0 && a.numberOfDigits > 1)
     {
-        return true;
+        --a.numberOfDigits;
+    }
+    while (b.digits[b.numberOfDigits - 1] == 0 && b.numberOfDigits > 1)
+    {
+        --b.numberOfDigits;
     }
     for (short int i = numberOfDigits - 1; i >= 0; --i)
     {
-        if (digits[i] != BI.digits[i])
+        if (a.digits[i] != b.digits[i])
         {
             return false;
         }
@@ -239,21 +245,32 @@ bool BigInteger::operator==(const BigInteger& BI) const
 
 bool BigInteger::operator<(const BigInteger& BI) const
 {
-    if (numberOfDigits < BI.numberOfDigits)
+    BigInteger a = *this;
+    BigInteger b = BI;
+    // Elimina zero-urile semnificative, daca exista.
+    while (a.digits[a.numberOfDigits - 1] == 0 && a.numberOfDigits > 1)
+    {
+        --a.numberOfDigits;
+    }
+    while (b.digits[b.numberOfDigits - 1] == 0 && b.numberOfDigits > 1)
+    {
+        --b.numberOfDigits;
+    }
+    if (a.numberOfDigits < b.numberOfDigits)
     {
         return true;
     }
-    if (numberOfDigits > BI.numberOfDigits)
+    if (a.numberOfDigits > b.numberOfDigits)
     {
         return false;
     }
     for (short int i = numberOfDigits - 1; i >= 0; --i)
     {
-        if (digits[i] < BI.digits[i])
+        if (a.digits[i] < b.digits[i])
         {
             return true;
         }
-        if (digits[i] > BI.digits[i])
+        if (a.digits[i] > b.digits[i])
         {
             return false;
         }
