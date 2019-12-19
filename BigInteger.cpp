@@ -166,6 +166,11 @@ BigInteger BigInteger::operator*(BigInteger BI)
 }
 BigInteger BigInteger::operator/(BigInteger BI)
 {
+    if (BI.digits[0] == 0 && BI.numberOfDigits == 1)
+    {
+        cerr << "Division by 0!";
+        exit(DIV_BY_0);
+    }
     if (*this < BI)
     {
         return {PLUS, 1, "0"};
