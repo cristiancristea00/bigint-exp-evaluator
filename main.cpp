@@ -1,26 +1,30 @@
-#include <sstream>
-#include <stack>
 #include "BigInteger.h"
 #include "Token.h"
+#include <sstream>
+#include <stack>
 
-void infixToPostfix(vector<Token>&);
+vector<Token> infixToPostfix(const string&);
+BigInteger evaluateInfix(const vector<Token>&);
 
 int main()
 {
-    vector<Token> postfix;
-    infixToPostfix(postfix);
+    // a = {PLUS, 2 , "50"};
+    //BigInteger b = {PLUS, 2 , "60"};
+    //cout << a - b;
+    string postfix;
+    getline(cin, postfix);
+    cout << evaluateInfix(infixToPostfix(postfix));
     return 0;
 }
 
-void infixToPostfix(vector<Token>& queue)
+vector<Token> infixToPostfix(const string& expression)
 {
-    string expression;
-    getline(cin, expression);
-    istringstream exp(expression);
 
+    istringstream exp(expression);
+    vector<Token> queue;
     stack<_Operator> ops;
     string token;
-    _Operator op;
+    _Operator op{};
 
     while (exp >> token)
     {
@@ -99,6 +103,7 @@ void infixToPostfix(vector<Token>& queue)
 
 
     //Test
+    cout << "Postfix: ";
     for (auto x : queue)
     {
         if (x.isOperand)
@@ -110,4 +115,43 @@ void infixToPostfix(vector<Token>& queue)
             cout << x.Operator.sym << ' ';
         }
     }
+    cout << endl;
+    return queue;
+}
+
+BigInteger evaluateInfix(const vector<Token>& queue)
+{
+    stack<Token> tokens;
+    BigInteger a, b;
+    for (auto tk : queue)
+    {
+        if (tk.isOperator)
+        {
+            a = tokens.top().Operand;
+            tokens.pop();
+            b = tokens.top().Operand;
+            tokens.pop();
+            if (tk.Operator.sym == '+')
+            {
+                tokens.push({true, b + a, false, {}});
+            }
+            else if (tk.Operator.sym == '-')
+            {
+                tokens.push({true, b - a, false, {}});
+            }
+            else if (tk.Operator.sym == '*')
+            {
+                tokens.push({true, b * a, false, {}});
+            }
+            else if (tk.Operator.sym == '/')
+            {
+                tokens.push({true, b / a, false, {}});
+            }
+        }
+        else if (tk.isOperand)
+        {
+            tokens.push(tk);
+        }
+    }
+    return tokens.top().Operand;
 }
