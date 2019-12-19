@@ -222,20 +222,16 @@ BigInteger BigInteger::operator/(BigInteger BI)
 
 bool BigInteger::operator==(const BigInteger& BI) const
 {
-    BigInteger a = *this;
-    BigInteger b = BI;
+    short unsigned NOD = numberOfDigits;
     // Elimina zero-urile semnificative, daca exista
-    while (a.digits[a.numberOfDigits - 1] == 0 && a.numberOfDigits > 1)
+    while (digits[NOD - 1] == 0 && NOD > 1)
     {
-        --a.numberOfDigits;
+        --NOD;
     }
-    while (b.digits[b.numberOfDigits - 1] == 0 && b.numberOfDigits > 1)
+    //Folosim NOD-ului primului nr pentru ca se considera mai mare
+    for (short int i = NOD - 1; i >= 0; --i)
     {
-        --b.numberOfDigits;
-    }
-    for (short int i = numberOfDigits - 1; i >= 0; --i)
-    {
-        if (a.digits[i] != b.digits[i])
+        if (digits[i] != BI.digits[i])
         {
             return false;
         }
@@ -245,32 +241,32 @@ bool BigInteger::operator==(const BigInteger& BI) const
 
 bool BigInteger::operator<(const BigInteger& BI) const
 {
-    BigInteger a = *this;
-    BigInteger b = BI;
+    short unsigned NODa = numberOfDigits;
+    short unsigned NODb = BI.numberOfDigits;
     // Elimina zero-urile semnificative, daca exista.
-    while (a.digits[a.numberOfDigits - 1] == 0 && a.numberOfDigits > 1)
+    while (digits[NODa - 1] == 0 && NODa > 1)
     {
-        --a.numberOfDigits;
+        --NODa;
     }
-    while (b.digits[b.numberOfDigits - 1] == 0 && b.numberOfDigits > 1)
+    while (BI.digits[NODb - 1] == 0 && NODb > 1)
     {
-        --b.numberOfDigits;
+        --NODb;
     }
-    if (a.numberOfDigits < b.numberOfDigits)
+    if (NODa < NODb)
     {
         return true;
     }
-    if (a.numberOfDigits > b.numberOfDigits)
+    if (NODa > NODb)
     {
         return false;
     }
-    for (short int i = numberOfDigits - 1; i >= 0; --i)
+    for (short int i = NODb - 1; i >= 0; --i)
     {
-        if (a.digits[i] < b.digits[i])
+        if (digits[i] < BI.digits[i])
         {
             return true;
         }
-        if (a.digits[i] > b.digits[i])
+        if (digits[i] > BI.digits[i])
         {
             return false;
         }
