@@ -79,7 +79,7 @@ BigInteger BigInteger::operator-(BigInteger BI)
         BigInteger difference;
         BigInteger a;
         BigInteger b;
-        if (this->compare(BI) == BIGGER)
+        if (*this > BI)
         {
             a = *this;
             b = BI;
@@ -92,7 +92,7 @@ BigInteger BigInteger::operator-(BigInteger BI)
                 difference.sign = PLUS;
             }
         }
-        else if (this->compare(BI) == LESS)
+        else if (*this < BI)
         {
             a = BI;
             b = *this;
@@ -150,7 +150,7 @@ BigInteger BigInteger::operator*(BigInteger BI)
         }
     }
     product.numberOfDigits = numberOfDigits + BI.numberOfDigits;
-    if (product.digits[product.numberOfDigits] == 0)
+    if (product.digits[product.numberOfDigits - 1] == 0)
     {
         --product.numberOfDigits;
     }
@@ -166,32 +166,48 @@ BigInteger BigInteger::operator*(BigInteger BI)
 }
 BigInteger BigInteger::operator/(BigInteger BI)
 {
-
+    if (*this < BI)
+    {
+        return {PLUS, 1, "0"};
+    }
     BigInteger quotient;
     BigInteger remainder;
+    if (sign == BI.sign)
+    {
+        quotient.sign = PLUS;
+    }
+    else
+    {
+        quotient.sign = MINUS;
+    }
     //TODO
+    return quotient;
 }
 
-COMP BigInteger::compare(BigInteger BI)
+bool BigInteger::operator<(const BigInteger& BI) const
 {
     if (numberOfDigits < BI.numberOfDigits)
     {
-        return LESS;
+        return true;
     }
     if (numberOfDigits > BI.numberOfDigits)
     {
-        return BIGGER;
+        return false;
     }
     for (short int i = numberOfDigits - 1; i >= 0; --i)
     {
         if (digits[i] < BI.digits[i])
         {
-            return LESS;
+            return true;
         }
         if (digits[i] > BI.digits[i])
         {
-            return BIGGER;
+            return false;
         }
     }
-    return EQUAL;
+    return false;
+}
+bool BigInteger::operator>(const BigInteger& BI) const
+{
+    return BI < *this;
 }

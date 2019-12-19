@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstring>
 
-#define DIM_MAX 4
+#define DIM_MAX 3
 
 using namespace std;
 
@@ -12,20 +12,12 @@ enum SEMN
     PLUS
 };
 
-enum COMP
-{
-    LESS = -1,
-    EQUAL = 0,
-    BIGGER = 1
-};
-
 class BigInteger
 {
  private:
     SEMN sign;
     short unsigned numberOfDigits;
     char digits[DIM_MAX];
-    COMP compare(BigInteger);
 
  public:
     BigInteger(SEMN newSign, unsigned newNOD, const char* newDigits);
@@ -35,4 +27,6 @@ class BigInteger
     BigInteger operator-(BigInteger);
     BigInteger operator*(BigInteger);
     BigInteger operator/(BigInteger);
+    bool operator<(const BigInteger&) const;
+    bool operator>(const BigInteger&) const;
 };
