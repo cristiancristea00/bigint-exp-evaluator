@@ -8,11 +8,11 @@ BigInteger::BigInteger(SIGN newSign, unsigned newNOD, const char* newDigits)
     {
         digits[newNOD - i - 1] = newDigits[i] - '0';
     }
-    memset(digits + numberOfDigits, 0, DIM_MAX - numberOfDigits);
 }
 
 BigInteger::BigInteger()
 {
+    sign = PLUS;
     memset(digits, 0, DIM_MAX);
 }
 

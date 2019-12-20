@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstring>
 
-#define DIM_MAX 300
+#define DIM_MAX 1000
 #define DIV_BY_0 1
 
 using namespace std;
