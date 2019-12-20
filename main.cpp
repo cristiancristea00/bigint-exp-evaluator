@@ -1,6 +1,7 @@
 #include "BigInteger.h"
 #include "Token.h"
 #include <sstream>
+#include <vector>
 #include <stack>
 
 vector<Token> infixToPostfix(const string&);
@@ -30,18 +31,18 @@ vector<Token> infixToPostfix(const string& expression)
             if (token.at(0) == '-')
             {
                 token.erase(0, 1);
-                queue.push_back({true, {MINUS, static_cast<unsigned int>(token.size()), token.c_str()}, false,});
+                queue.push_back({true, {MINUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
                 continue;
             }
             else if (token.at(0) == '+')
             {
                 token.erase(0, 1);
-                queue.push_back({true, {PLUS, static_cast<unsigned int>(token.size()), token.c_str()}, false,});
+                queue.push_back({true, {PLUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
                 continue;
             }
             else
             {
-                queue.push_back({true, {PLUS, static_cast<unsigned int>(token.size()), token.c_str()}, false,});
+                queue.push_back({true, {PLUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
                 continue;
             }
         }

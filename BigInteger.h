@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <cstring>
 
 #define DIM_MAX 1000
 #define DIV_BY_0 1
@@ -28,7 +26,7 @@ class BigInteger
 
  public:
 
-    BigInteger(SIGN newSign, unsigned newNOD, const char* newDigits);
+    BigInteger(SIGN newSign, short unsigned newNOD, const char* newDigits);
     BigInteger();
 
     friend ostream& operator<<(ostream&, BigInteger);

@@ -1,6 +1,7 @@
 #include "BigInteger.h"
+#include <cstring>
 
-BigInteger::BigInteger(SIGN newSign, unsigned newNOD, const char* newDigits)
+BigInteger::BigInteger(SIGN newSign, short unsigned newNOD, const char* newDigits)
 {
     sign = newSign;
     numberOfDigits = newNOD;
