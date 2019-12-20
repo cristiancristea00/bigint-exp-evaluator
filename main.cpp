@@ -10,7 +10,7 @@ int main()
 {
     string postfix;
     getline(cin, postfix);
-    cout << evaluateInfix(infixToPostfix(postfix));
+    cout << evaluateInfix(infixToPostfix(postfix)) << endl;
     return 0;
 }
 
