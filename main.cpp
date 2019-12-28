@@ -1,11 +1,11 @@
 #include "BigInteger.h"
 #include "Token.h"
 #include <sstream>
-#include <vector>
+#include <list>
 #include <stack>
 
-vector<Token> infixToPostfix(const string&);
-BigInteger evaluateInfix(const vector<Token>&);
+list<Token> infixToPostfix(const string&);
+BigInteger evaluateInfix(const list<Token>&);
 
 int main()
 {
@@ -15,11 +15,11 @@ int main()
     return 0;
 }
 
-vector<Token> infixToPostfix(const string& expression)
+list<Token> infixToPostfix(const string& expression)
 {
 
     istringstream exp(expression);
-    vector<Token> queue;
+    list<Token> queue;
     stack<_Operator> ops;
     string token;
     _Operator op{};
@@ -101,7 +101,7 @@ vector<Token> infixToPostfix(const string& expression)
     return queue;
 }
 
-BigInteger evaluateInfix(const vector<Token>& queue)
+BigInteger evaluateInfix(const list<Token>& queue)
 {
     stack<Token> tokens;
     BigInteger a, b;
