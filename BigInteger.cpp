@@ -139,6 +139,10 @@ BigInteger BigInteger::operator-(BigInteger BI)
 
 BigInteger BigInteger::operator*(BigInteger BI)
 {
+    if ((digits[0] == 0 && numberOfDigits == 1) || (BI.digits[0] == 0 && BI.numberOfDigits == 1))
+    {
+        return {PLUS, 1, "0"};
+    }
     BigInteger product;
     short int carry = 0;
     short int i, j;
