@@ -189,17 +189,16 @@ BigInteger BigInteger::operator/(BigInteger BI)
     }
     BigInteger quotient;
     BigInteger remainder;
-    if (sign == BI.sign)
-    {
-        quotient.sign = PLUS;
-    }
-    else
-    {
-        quotient.sign = MINUS;
-    }
     if (*this == BI)
     {
-        return {quotient.sign, 1, "1"};
+        if (sign == BI.sign)
+        {
+            return {PLUS, 1, "1"};
+        }
+        else
+        {
+            return {MINUS, 1, "1"};
+        }
     }
     quotient.numberOfDigits = numberOfDigits;
     remainder.numberOfDigits = 0;
@@ -221,6 +220,14 @@ BigInteger BigInteger::operator/(BigInteger BI)
     while (quotient.digits[quotient.numberOfDigits - 1] == 0 && quotient.numberOfDigits > 1)
     {
         --quotient.numberOfDigits;
+    }
+    if (sign == BI.sign)
+    {
+        quotient.sign = PLUS;
+    }
+    else
+    {
+        quotient.sign = MINUS;
     }
     return quotient;
 }
