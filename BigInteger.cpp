@@ -14,6 +14,7 @@ BigInteger::BigInteger(SIGN newSign, short unsigned newNOD, const char* newDigit
 BigInteger::BigInteger()
 {
     sign = PLUS;
+    numberOfDigits = 0;
     memset(digits, 0, DIM_MAX);
 }
 
@@ -187,8 +188,6 @@ BigInteger BigInteger::operator/(BigInteger BI)
     {
         return {PLUS, 1, "0"};
     }
-    BigInteger quotient;
-    BigInteger remainder;
     if (*this == BI)
     {
         if (sign == BI.sign)
@@ -200,6 +199,17 @@ BigInteger BigInteger::operator/(BigInteger BI)
             return {MINUS, 1, "1"};
         }
     }
+    BigInteger quotient;
+    BigInteger remainder;
+    if (sign == BI.sign)
+    {
+        quotient.sign = PLUS;
+    }
+    else
+    {
+        quotient.sign = MINUS;
+    }
+    BI.sign = PLUS;
     quotient.numberOfDigits = numberOfDigits;
     remainder.numberOfDigits = 0;
     for (short int i = numberOfDigits; i >= 0; --i)
@@ -220,14 +230,6 @@ BigInteger BigInteger::operator/(BigInteger BI)
     while (quotient.digits[quotient.numberOfDigits - 1] == 0 && quotient.numberOfDigits > 1)
     {
         --quotient.numberOfDigits;
-    }
-    if (sign == BI.sign)
-    {
-        quotient.sign = PLUS;
-    }
-    else
-    {
-        quotient.sign = MINUS;
     }
     return quotient;
 }
