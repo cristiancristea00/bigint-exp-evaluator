@@ -36,8 +36,8 @@ BigInteger BigInteger::operator+(BigInteger BI)
     if (sign == BI.sign)
     {
         BigInteger sum;
-        short int carry = 0;
-        unsigned maxLength = max(numberOfDigits, BI.numberOfDigits);
+        char carry = 0;
+        short unsigned maxLength = max(numberOfDigits, BI.numberOfDigits);
         for (short int i = 0; i < maxLength; ++i)
         {
             sum.digits[i] = digits[i] + BI.digits[i] + carry;
@@ -113,7 +113,7 @@ BigInteger BigInteger::operator-(BigInteger BI)
             return {PLUS, 1, "0"};
         }
         difference.numberOfDigits = a.numberOfDigits;
-        short int carry = 0;
+        char carry = 0;
         unsigned int i = 0;
         for (i = 0; i < difference.numberOfDigits; ++i)
         {
@@ -145,8 +145,8 @@ BigInteger BigInteger::operator*(BigInteger BI)
         return {PLUS, 1, "0"};
     }
     BigInteger product;
-    short int carry = 0;
-    short int i, j;
+    char carry = 0;
+    unsigned short i = 0, j = 0;
     for (i = 0; i < numberOfDigits; ++i)
     {
         carry = 0;
@@ -214,7 +214,7 @@ BigInteger BigInteger::operator/(BigInteger BI)
     remainder.numberOfDigits = 0;
     for (short int i = numberOfDigits; i >= 0; --i)
     {
-        for (int j = numberOfDigits - 1; j >= 0; --j)
+        for (short int j = numberOfDigits - 1; j >= 0; --j)
         {
             remainder.digits[j + 1] = remainder.digits[j];
         }

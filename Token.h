@@ -16,5 +16,5 @@ struct Token
     bool isOperand = false;
     BigInteger Operand = {};
     bool isOperator = false;
-    _Operator Operator;
+    _Operator Operator = {};
 };
