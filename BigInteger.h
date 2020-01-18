@@ -17,7 +17,7 @@ class BigInteger
 
 	SIGN sign;
 	short unsigned numberOfDigits;
-	char digits[DIM_MAX];
+	char digits[DIM_MAX] = {};
 
 	bool operator==(const BigInteger&) const;
 	bool operator<(const BigInteger&) const;
@@ -26,10 +26,10 @@ class BigInteger
 
  public:
 
-	BigInteger(SIGN newSign, short unsigned newNOD, const char* newDigits);
+	BigInteger(const SIGN&, const short unsigned&, const char*);
 	BigInteger();
 
-	friend ostream& operator<<(ostream&, BigInteger);
+	friend ostream& operator<<(ostream&, const BigInteger&);
 
 	BigInteger operator+(BigInteger);
 	BigInteger operator-(BigInteger);

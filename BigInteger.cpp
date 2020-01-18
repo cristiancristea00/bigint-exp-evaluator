@@ -1,7 +1,7 @@
 #include "BigInteger.h"
 #include <cstring>
 
-BigInteger::BigInteger(SIGN newSign, short unsigned newNOD, const char* newDigits)
+BigInteger::BigInteger(const SIGN& newSign, const short unsigned& newNOD, const char* newDigits)
 {
 	sign = newSign;
 	numberOfDigits = newNOD;
@@ -18,7 +18,7 @@ BigInteger::BigInteger()
 	memset(digits, 0, DIM_MAX);
 }
 
-ostream& operator<<(ostream& os, BigInteger BI)
+ostream& operator<<(ostream& os, const BigInteger& BI)
 {
 	if (BI.sign == MINUS)
 	{
