@@ -1,5 +1,5 @@
-CC := g++
-CFLAGS := -std=c++14 -Wall -Wextra -Wpedantic -Ofast -funroll-loops -finline-functions
+CC := c++
+CFLAGS := -std=c++14 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Ofast -funroll-loops -finline-functions
 TARGET := bigint-exp-evaluator
 
 SRCS := $(wildcard *.cpp)
