@@ -105,7 +105,7 @@ BigInteger evaluateInfix(const list<Token>& queue)
 {
 	stack<Token> tokens;
 	BigInteger a, b;
-	for (auto tk : queue)
+	for (const auto& tk : queue)
 	{
 		if (tk.isOperator)
 		{
