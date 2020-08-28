@@ -5,34 +5,34 @@
 
 using namespace std;
 
-enum SIGN
+enum Sign
 {
-	MINUS,
-	PLUS
+    MINUS,
+    PLUS
 };
 
 class BigInteger
 {
  private:
 
-	SIGN sign;
-	short unsigned numberOfDigits;
-	char digits[DIM_MAX] = {};
+    Sign sign;
+    short unsigned number_of_digits;
+    char digits[DIM_MAX] = {};
 
-	bool operator==(const BigInteger&) const;
-	bool operator<(const BigInteger&) const;
-	bool operator>(const BigInteger&) const;
-	bool operator>=(const BigInteger&) const;
+    bool operator==(BigInteger const&) const noexcept;
+    bool operator<(BigInteger const&) const noexcept;
+    bool operator>(BigInteger const&) const noexcept;
+    bool operator>=(BigInteger const&) const noexcept;
 
  public:
 
-	BigInteger(const SIGN&, const short unsigned&, const char*);
-	BigInteger();
+    BigInteger(Sign const&, short unsigned const&, char const*) noexcept;
+    BigInteger() noexcept;
 
-	friend ostream& operator<<(ostream&, const BigInteger&);
+    friend ostream& operator<<(ostream&, BigInteger const&) noexcept;
 
-	BigInteger operator+(BigInteger);
-	BigInteger operator-(BigInteger);
-	BigInteger operator*(BigInteger);
-	BigInteger operator/(BigInteger);
+    BigInteger operator+(BigInteger) noexcept;
+    BigInteger operator-(BigInteger) noexcept;
+    BigInteger operator*(BigInteger) noexcept;
+    BigInteger operator/(BigInteger) noexcept;
 };

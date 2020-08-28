@@ -1,20 +1,20 @@
-enum PRECEDENCE
+enum Precedence
 {
-	PAR,
-	ORD1,
-	ORD2,
+    PAR,
+    ORD_1,
+    ORD_2,
 };
 
-struct _Operator
+struct Operator
 {
-	char sym;
-	PRECEDENCE pre;
+    char sym;
+    Precedence pre;
 };
 
 struct Token
 {
-	bool isOperand = false;
-	BigInteger Operand = {};
-	bool isOperator = false;
-	_Operator Operator = {};
+    bool is_operand = false;
+    BigInteger operand = {};
+    bool is_operator = false;
+    Operator _operator = {};
 };
