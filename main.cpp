@@ -4,84 +4,82 @@
 #include <list>
 #include <stack>
 
-list<Token> InfixToPostfix(string const&) noexcept;
-BigInteger EvaluateInfix(list<Token> const&) noexcept;
+auto InfixToPostfix(std::string const & expression) noexcept -> std::list<Token>;
+auto EvaluateInfix(std::list<Token> const & queue) noexcept -> BigInteger;
 
 int main()
 {
-    string postfix;
-    getline(cin, postfix);
-    cout << EvaluateInfix(InfixToPostfix(postfix)) << '\n';
+    std::string postfix;
+    getline(std::cin, postfix);
+    std::cout << EvaluateInfix(InfixToPostfix(postfix)) << '\n';
     return 0;
 }
 
-list<Token> InfixToPostfix(string const& expression) noexcept
+auto InfixToPostfix(std::string const & expression) noexcept -> std::list<Token>
 {
 
-    istringstream exp(expression);
-    list<Token> queue;
-    stack<Operator> ops;
-    string token;
-    Operator op{};
+    std::istringstream exp(expression);
+    std::list<Token> queue;
+    std::stack<Operator> ops;
+    std::string token;
+    Operator an_operator {};
 
     // For every element in the expression
     while (exp >> token)
     {
         // Verify if the token is an operand
-        if ((token.size() > 1) || (token.size() == 1 && isdigit(token.at(0))))
+        if ((token.size() > 1) || (token.size() == 1 && (isdigit(token.at(0)) != 0)))
         {
             if (token.at(0) == '-')
             {
                 token.erase(0, 1);
-                queue.push_back({true, {MINUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
+                queue.push_back({true, {BigInteger::Sign::MINUS, static_cast<uint16_t>(token.size()), token.c_str()},
+                                 false,});
                 continue;
             }
-            else if (token.at(0) == '+')
+            if (token.at(0) == '+')
             {
                 token.erase(0, 1);
-                queue.push_back({true, {PLUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
+                queue.push_back({true, {BigInteger::Sign::PLUS, static_cast<uint16_t>(token.size()), token.c_str()},
+                                 false,});
                 continue;
             }
-            else
-            {
-                queue.push_back({true, {PLUS, static_cast<short unsigned>(token.size()), token.c_str()}, false,});
-                continue;
-            }
+            queue.push_back({true, {BigInteger::Sign::PLUS, static_cast<uint16_t>(token.size()), token.c_str()},
+                             false,});
+            continue;
         }
-            // The token is an operator or a  brace
+        // The token is an operator or a  brace
+
+        an_operator.sym = token.at(0);
+        if (token.at(0) == '-' || token.at(0) == '+')
+        {
+            an_operator.pre = Precedence::ORD_1;
+        }
+        else if (token.at(0) == '*' || token.at(0) == '/')
+        {
+            an_operator.pre = Precedence::ORD_2;
+        }
         else
         {
-            op.sym = token.at(0);
-            if (token.at(0) == '-' || token.at(0) == '+')
-            {
-                op.pre = ORD_1;
-            }
-            else if (token.at(0) == '*' || token.at(0) == '/')
-            {
-                op.pre = ORD_2;
-            }
-            else
-            {
-                op.pre = PAR;
-            }
+            an_operator.pre = Precedence::PAR;
         }
 
-        if (op.pre != PAR)
+        if (an_operator.pre != Precedence::PAR)
         {
-            while (!ops.empty() && ops.top().pre >= op.pre && ops.top().sym != '(')
+            while (!ops.empty() && ops.top().pre >= an_operator.pre && ops.top().sym != '(')
             {
                 queue.push_back({false, {}, true, {ops.top().sym, ops.top().pre}});
                 ops.pop();
             }
-            ops.push(op);
+            ops.push(an_operator);
             continue;
         }
-        else if (op.sym == '(')
+        if (an_operator.sym == '(')
         {
-            ops.push(op);
+            ops.push(an_operator);
             continue;
         }
-        else if (op.sym == ')')
+        if (an_operator.sym == ')')
         {
             while (!ops.empty() && ops.top().sym != '(')
             {
@@ -104,38 +102,39 @@ list<Token> InfixToPostfix(string const& expression) noexcept
     return queue;
 }
 
-BigInteger EvaluateInfix(list<Token> const& queue) noexcept
+auto EvaluateInfix(std::list<Token> const & queue) noexcept -> BigInteger
 {
-    stack<Token> tokens;
-    BigInteger a, b;
-    for (const auto& tk : queue)
+    std::stack<Token> tokens;
+    BigInteger first;
+    BigInteger second;
+    for (const auto & token: queue)
     {
-        if (tk.is_operator)
+        if (token.is_operator)
         {
-            a = tokens.top().operand;
+            first = tokens.top().operand;
             tokens.pop();
-            b = tokens.top().operand;
+            second = tokens.top().operand;
             tokens.pop();
-            if (tk._operator.sym == '+')
+            if (token.opt.sym == '+')
             {
-                tokens.push({true, b + a, false, {}});
+                tokens.push({true, second + first, false, {}});
             }
-            else if (tk._operator.sym == '-')
+            else if (token.opt.sym == '-')
             {
-                tokens.push({true, b - a, false, {}});
+                tokens.push({true, second - first, false, {}});
             }
-            else if (tk._operator.sym == '*')
+            else if (token.opt.sym == '*')
             {
-                tokens.push({true, b * a, false, {}});
+                tokens.push({true, second * first, false, {}});
             }
-            else if (tk._operator.sym == '/')
+            else if (token.opt.sym == '/')
             {
-                tokens.push({true, b / a, false, {}});
+                tokens.push({true, second / first, false, {}});
             }
         }
-        else if (tk.is_operand)
+        else if (token.is_operand)
         {
-            tokens.push(tk);
+            tokens.push(token);
         }
     }
     return tokens.top().operand;

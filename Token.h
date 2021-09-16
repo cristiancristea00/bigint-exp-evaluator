@@ -1,4 +1,4 @@
-enum Precedence
+enum class Precedence
 {
     PAR,
     ORD_1,
@@ -16,5 +16,5 @@ struct Token
     bool is_operand = false;
     BigInteger operand = {};
     bool is_operator = false;
-    Operator _operator = {};
+    Operator opt = {};
 };
